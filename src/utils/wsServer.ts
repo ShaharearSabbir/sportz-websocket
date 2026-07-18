@@ -8,9 +8,9 @@ export const sendJsonWS = (ws: WebSocket, data: any) => {
 
 export const broadcastJsonWS = (wss: WebSocketServer, data: any) => {
   wss.clients.forEach((client) => {
-    if (client.readyState !== client.OPEN) return;
-
-    client.send(JSON.stringify(data));
+    if (client.readyState === client.OPEN) {
+      client.send(JSON.stringify(data));
+    }
   });
 };
 
