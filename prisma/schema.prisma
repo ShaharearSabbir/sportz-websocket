@@ -29,6 +29,7 @@ model Match {
 
   commentary Commentary[]
 
+  @@unique([sport, homeTeam, awayTeam, startTime])
   @@map("matches")
 }
 
