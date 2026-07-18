@@ -19,6 +19,11 @@ export const matchController = {
     const newMatch = parsed.data as CreateMatchInput;
 
     const result = await matchService.addMatch(newMatch);
+
+    if (res.app.locals.broadcastMatchCreated) {
+      res.app.locals.broadcastMatchCreated(result);
+    }
+
     ApiResponse.success(res, 201, "Match created successfully", result);
   }),
 
@@ -30,6 +35,7 @@ export const matchController = {
     }
     const query = parsed.data as ListMatchesQuery;
     const matches = await matchService.getMatches(query);
+
     ApiResponse.success(res, 200, "Matches retrieved successfully", matches);
   }),
 };
