@@ -5,8 +5,8 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { matchRouter } from "./modules/match/match.route.js";
 import { globalErrorHandler } from "./middleware/globalErrorHandler.js";
 import http from "http";
-import { hostname } from "zod";
 import { attachWebSocketServer } from "./utils/wsServer.js";
+import { httpLimiter } from "./middleware/rateLimiter.js";
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
@@ -20,6 +20,8 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.json());
+
+app.use(httpLimiter);
 
 app.get("/", (req, res) => {
   res.send("Hello from sportz!");
